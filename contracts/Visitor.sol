@@ -3,19 +3,13 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Player.sol";
 
 contract Visitor is Player {
-    function getLeftTotalPledgeByGameId(uint _id) public view returns(uint) {
-        return quizs[_id].totalPledge[left];
+    function getQuizPledge(uint _id, uint option) public view returns(uint) {
+        require(option == left || option == right, "Options can only be 1 or 2");
+        return quizs[_id].totalPledge[option];
     }
 
-    function getRightTotalPledgeByGameId(uint _id) public view returns(uint) {
-        return quizs[_id].totalPledge[right];
-    }
-
-    function getPledgeByGameId(uint _id) public view returns(uint) {
-        return quizs[_id].players[msg.sender].pledge;
-    }
-
-    function getOptionByGameId(uint _id) public view returns(uint) {
-        return quizs[_id].players[msg.sender].option;
+    function getPlayerPledge(uint _id, uint option) public view returns(uint) {
+        require(option == left || option == right, "Options can only be 1 or 2");
+        return quizs[_id].players[msg.sender].pledge[option];
     }
 }

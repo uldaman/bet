@@ -10,18 +10,17 @@ contract Struct {
     }
 
     uint minStakes = 100 ether;
-    uint left = 1;
-    uint right = 2;
+    uint constant left = 1;
+    uint constant right = 2;
 
     struct Vote {
-        uint option;  // 0 没有参与, 1 left, 2 right
-        uint pledge;
+        mapping (uint => uint) pledge;  // option (left or right) => pledge
     }
 
     struct Quiz {
         Stages stage;
         uint winner;
-        mapping (uint => uint) totalPledge;
+        mapping (uint => uint) totalPledge;  // option (left or right) => total pledge
         mapping (address => Vote) players;
     }
 

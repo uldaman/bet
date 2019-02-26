@@ -21,8 +21,8 @@ contract Manager is Struct {
     function settle(uint _id, uint winner) public {
         Quiz storage quiz = quizs[_id];
 
-        require(winner == left || winner == right, "Winner can only be 1 or 2");
         require(quiz.stage == Stages.Locked, "Quiz must be locked");
+        require(winner == left || winner == right, "Winner can only be 1 or 2");
 
         quiz.stage = Stages.Finished;
         quiz.winner = winner;
