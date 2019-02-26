@@ -26,6 +26,4 @@ contract Struct {
     }
 
     mapping (uint => Quiz) quizs;  // quiz id => quiz struct
-
-    mapping (address => uint[]) playerGames;  // player => list of quizs
 }

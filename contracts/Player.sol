@@ -19,10 +19,11 @@ contract Player is Manager {
         Quiz storage quiz = quizs[_id];
         Vote storage vote = quiz.players[msg.sender];
 
+        require(vote.option != 0, "No bid");
         require(quiz.stage == Stages.Activating || quiz.stage == Stages.Canceled, "Quiz must be active or cancelled");
-        require(vote.option != 0 && vote.pledge >= minStakes, "No bid");
 
         uint stakes = vote.pledge;
+        quiz.totalPledge[vote.option] = quiz.totalPledge[vote.option] - vote.pledge;
         delete(quiz.players[msg.sender]);
         msg.sender.transfer(stakes);
     }
@@ -32,10 +33,9 @@ contract Player is Manager {
         Vote storage vote = quiz.players[msg.sender];
 
         require(quiz.stage == Stages.Finished, "Quiz must be finished");
-        require(vote.option != 0 && vote.pledge >= minStakes, "No bid");
-        require(vote.option == quiz.winner, "Not winning the bid");
+        require(vote.option == quiz.winner, "Not winning the quiz");
 
-        uint totalAaward = quiz.totalPledge[1] + quiz.totalPledge[2];
+        uint totalAaward = quiz.totalPledge[left] + quiz.totalPledge[right];
         uint weight = vote.pledge / quiz.totalPledge[quiz.winner];
         uint award = totalAaward * weight;
         delete(quiz.players[msg.sender]);
