@@ -3,30 +3,28 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Struct.sol";
 
 contract Manager is Struct {
-    uint public minStakes = 100 ether;
-
     function creat(uint _id) public {
-        require(games[_id].stage == Stages.None, "Game must be none");
-        games[_id].stage = Stages.Activating;
+        require(quizs[_id].stage == Stages.None, "Quiz must be none");
+        quizs[_id].stage = Stages.Activating;
     }
 
     function cancel(uint _id) public {
-        require(games[_id].stage != Stages.Finished, "Game must not be finished");
-        games[_id].stage = Stages.Canceled;
+        require(quizs[_id].stage != Stages.Finished, "Quiz must not be finished");
+        quizs[_id].stage = Stages.Canceled;
     }
 
     function lock(uint _id) public {
-        require(games[_id].stage == Stages.Activating, "Game must be active");
-        games[_id].stage = Stages.Locked;
+        require(quizs[_id].stage == Stages.Activating, "Quiz must be active");
+        quizs[_id].stage = Stages.Locked;
     }
 
     function settle(uint _id, uint winner) public {
-        Game storage game = games[_id];
+        Quiz storage quiz = quizs[_id];
 
-        require(winner == 1 || winner == 2, "Winner can only be 1 or 2");
-        require(game.stage == Stages.Locked, "Game must be locked");
+        require(winner == left || winner == right, "Winner can only be 1 or 2");
+        require(quiz.stage == Stages.Locked, "Quiz must be locked");
 
-        game.stage = Stages.Finished;
-        game.winner = winner;
+        quiz.stage = Stages.Finished;
+        quiz.winner = winner;
     }
 }

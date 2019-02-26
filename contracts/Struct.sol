@@ -9,19 +9,23 @@ contract Struct {
         Finished
     }
 
+    uint minStakes = 100 ether;
+    uint left = 1;
+    uint right = 2;
+
     struct Vote {
         uint option;  // 0 没有参与, 1 left, 2 right
         uint pledge;
     }
 
-    struct Game {
+    struct Quiz {
         Stages stage;
         uint winner;
         mapping (uint => uint) totalPledge;
         mapping (address => Vote) players;
     }
 
-    mapping (uint => Game) games;  // game id => game struct
+    mapping (uint => Quiz) quizs;  // quiz id => quiz struct
 
-    mapping (address => uint[]) playerGames;  // player => list of games
+    mapping (address => uint[]) playerGames;  // player => list of quizs
 }
