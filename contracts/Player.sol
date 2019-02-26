@@ -34,12 +34,13 @@ contract Player is Manager {
         Vote storage vote = quiz.players[msg.sender];
 
         require(quiz.stage == Stages.Finished, "Quiz must be finished");
+        require(!vote.hasWithdraw, "Has already withdrawed");
         require(vote.pledge[quiz.winner] > 0, "No option to win");
 
         uint totalAaward = quiz.totalPledge[left] + quiz.totalPledge[right];
         uint weight = vote.pledge[quiz.winner] / quiz.totalPledge[quiz.winner];
         uint award = totalAaward * weight;
-        delete(quiz.players[msg.sender]);
+        vote.hasWithdraw = true;
         msg.sender.transfer(award);
     }
 }

@@ -15,6 +15,7 @@ contract Struct {
 
     struct Vote {
         mapping (uint => uint) pledge;  // option (left or right) => pledge
+        bool hasWithdraw;
     }
 
     struct Quiz {
