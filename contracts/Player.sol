@@ -32,10 +32,10 @@ contract Player is Manager {
         quiz.totalPledge[option] = quiz.totalPledge[option] - stakes;
         delete(vote.pledge[option]);
 
-        uint it = playerQuizs[msg.sender].find(_id);
-        if (playerQuizs[msg.sender].iterate_valid(it)) {
-            playerQuizs[msg.sender].remove(it);
-        }
+        // uint it = playerQuizs[msg.sender].find(_id);
+        // if (playerQuizs[msg.sender].iterate_valid(it)) {
+        //     playerQuizs[msg.sender].remove(it);
+        // }
 
         msg.sender.transfer(stakes);
     }
