@@ -1,0 +1,6 @@
+/build/
+/migrations/
+
+truffle-config.js
+Migrations.sol
+*.code-workspace
