@@ -17,4 +17,19 @@ contract Visitor is Player {
         require(option == left || option == right, "Options can only be 1 or 2");
         return quizs[_id].players[msg.sender].pledge[option];
     }
+
+    function getPlayerQuizs() external view returns(uint[] memory) {
+        uint[] memory result = new uint[](playerQuizs[msg.sender].count);
+        uint counter = 0;
+
+        for (uint i = playerQuizs[msg.sender].iterate_start()
+        ;playerQuizs[msg.sender].iterate_valid(i)
+        ;i = playerQuizs[msg.sender].iterate_next(i)) {
+            uint value = playerQuizs[msg.sender].iterate_get(i);
+            result[counter] = value;
+            counter++;
+        }
+
+        return result;
+    }
 }

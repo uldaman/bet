@@ -13,6 +13,11 @@ contract Player is Manager {
 
         vote.pledge[option] = vote.pledge[option] + msg.value;
         quiz.totalPledge[option] = quiz.totalPledge[option] + msg.value;
+
+        uint it = playerQuizs[msg.sender].find(_id);
+        if (!playerQuizs[msg.sender].iterate_valid(it)) {
+            playerQuizs[msg.sender].append(_id);
+        }
     }
 
     function repent(uint _id, uint option) public {
@@ -26,6 +31,12 @@ contract Player is Manager {
         uint stakes = vote.pledge[option];
         quiz.totalPledge[option] = quiz.totalPledge[option] - stakes;
         delete(vote.pledge[option]);
+
+        uint it = playerQuizs[msg.sender].find(_id);
+        if (playerQuizs[msg.sender].iterate_valid(it)) {
+            playerQuizs[msg.sender].remove(it);
+        }
+
         msg.sender.transfer(stakes);
     }
 

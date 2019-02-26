@@ -1,5 +1,7 @@
 pragma solidity >=0.4.22 <0.6.0;
 
+import "../lib/UintList.sol";
+
 contract Struct {
     enum Stages {
         None,
@@ -26,4 +28,7 @@ contract Struct {
     }
 
     mapping (uint => Quiz) quizs;  // quiz id => quiz struct
+
+    using UintList for UintList.data;
+    mapping (address => UintList.data) playerQuizs;
 }
