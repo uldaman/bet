@@ -5,7 +5,7 @@ import "./Struct.sol";
 contract Manager is Struct {
     function creat(uint _id) public {
         require(quizs[_id].stage == Stages.None, "Quiz must be none");
-        quizs[_id].stage = Stages.Activating;
+        quizs[_id].stage = Stages.Active;
     }
 
     function cancel(uint _id) public {
@@ -14,7 +14,7 @@ contract Manager is Struct {
     }
 
     function lock(uint _id) public {
-        require(quizs[_id].stage == Stages.Activating, "Quiz must be active");
+        require(quizs[_id].stage == Stages.Active, "Quiz must be active");
         quizs[_id].stage = Stages.Locked;
     }
 

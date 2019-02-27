@@ -18,7 +18,7 @@ library UintList {
     function append(data storage self, uint _data) public {
         uint index = uint(self.items.push(Item({prev: self.last, next: None, data: _data})));
         if (self.last == None) {
-            if (self.first != None || self.count != 0) revert();
+            if (self.first != None || self.count != 0) revert("List append error");
             self.first = self.last = index;
             self.count = 1;
         } else {

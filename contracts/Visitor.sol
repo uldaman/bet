@@ -18,18 +18,27 @@ contract Visitor is Player {
         return quizs[_id].players[msg.sender].pledge[option];
     }
 
+    function isQuizActive(uint _id) public view returns (bool) {
+        return quizs[_id].stage == Stages.Active;
+    }
+
+    function isQuizLocked(uint _id) public view returns (bool) {
+        return quizs[_id].stage == Stages.Active;
+    }
+
+    function isQuizFinished(uint _id) public view returns (bool) {
+        return quizs[_id].stage == Stages.Active;
+    }
+
     function getPlayerQuizs() external view returns(uint[] memory) {
         uint[] memory result = new uint[](playerQuizs[msg.sender].count);
         uint counter = 0;
-
         for (uint i = playerQuizs[msg.sender].iterate_start()
         ;playerQuizs[msg.sender].iterate_valid(i)
         ;i = playerQuizs[msg.sender].iterate_next(i)) {
-            uint value = playerQuizs[msg.sender].iterate_get(i);
-            result[counter] = value;
+            result[counter] = playerQuizs[msg.sender].iterate_get(i);
             counter++;
         }
-
         return result;
     }
 }

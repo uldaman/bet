@@ -5,7 +5,7 @@ import "../lib/UintList.sol";
 contract Struct {
     enum Stages {
         None,
-        Activating,
+        Active,
         Locked,
         Canceled,
         Finished
@@ -29,6 +29,7 @@ contract Struct {
 
     mapping (uint => Quiz) quizs;  // quiz id => quiz struct
 
+    /// @dev 存取玩家参与的所有 Quiz
     using UintList for UintList.data;
     mapping (address => UintList.data) playerQuizs;
 }
