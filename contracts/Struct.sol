@@ -16,14 +16,14 @@ contract Struct {
     uint constant right = 2;
 
     struct Vote {
-        mapping (uint => uint) pledge;  // option (left or right) => pledge
+        mapping (uint => uint) pledge;  // choice (left or right) => pledge
         bool hasWithdraw;
     }
 
     struct Quiz {
         Stages stage;
         uint winner;
-        mapping (uint => uint) totalPledge;  // option (left or right) => total pledge
+        mapping (uint => uint) totalPledge;  // choice (left or right) => total pledge
         mapping (address => Vote) players;
     }
 

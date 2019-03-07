@@ -3,9 +3,9 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Player.sol";
 
 contract Visitor is Player {
-    function getQuizTotalPledgeByOption(uint _id, uint option) public view returns(uint) {
-        require(option == left || option == right, "Options can only be 1 or 2");
-        return quizs[_id].totalPledge[option];
+    function getQuizTotalPledgeByOption(uint _id, uint choice) public view returns(uint) {
+        require(choice == left || choice == right, "Options can only be 1 or 2");
+        return quizs[_id].totalPledge[choice];
     }
 
     function getQuizWinner(uint _id) public view returns(uint) {
@@ -13,9 +13,9 @@ contract Visitor is Player {
         return quizs[_id].winner;
     }
 
-    function getPlayerPledgeByOption(uint _id, uint option) public view returns(uint) {
-        require(option == left || option == right, "Options can only be 1 or 2");
-        return quizs[_id].players[msg.sender].pledge[option];
+    function getPlayerPledgeByOption(uint _id, uint choice) public view returns(uint) {
+        require(choice == left || choice == right, "Options can only be 1 or 2");
+        return quizs[_id].players[msg.sender].pledge[choice];
     }
 
     function isQuizActive(uint _id) public view returns (bool) {
