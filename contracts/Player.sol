@@ -8,7 +8,7 @@ contract Player is Manager {
         Vote storage vote = quiz.players[msg.sender];
 
         require(quiz.stage == Stages.Active, "Quiz must be active");
-        require(choice == left || choice == right, "Voting options can only be 1 or 2");
+        require(choice == left || choice == right, "Choice can only be 1 or 2");
         require(msg.value >= minStakes, "Pledge must be above the minimum");
 
         vote.pledge[choice] = vote.pledge[choice] + msg.value;
@@ -25,7 +25,7 @@ contract Player is Manager {
         Vote storage vote = quiz.players[msg.sender];
 
         require(quiz.stage == Stages.Active || quiz.stage == Stages.Canceled, "Quiz must be active or cancelled");
-        require(choice == left || choice == right, "Voting options can only be 1 or 2");
+        require(choice == left || choice == right, "Choice can only be 1 or 2");
         require(vote.pledge[choice] != 0, "This choice is not selected");
 
         uint stakes = vote.pledge[choice];
