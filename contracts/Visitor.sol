@@ -5,8 +5,8 @@ import "./Player.sol";
 contract Visitor is Player {
     function getQuiz(uint _id) public view returns(
         uint id, Stages stage,
-        string memory leftName, uint leftPledge,
-        string memory rightName, uint rightPledge
+        string memory leftName, uint leftPledge, uint leftScore,
+        string memory rightName, uint rightPledge,  uint rightScore
     ) {
         require(quizs[_id].stage != Stages.None, "Quiz not exited");
         Quiz storage quiz = quizs[_id];
@@ -17,9 +17,11 @@ contract Visitor is Player {
         Combatant storage right = quiz.combatants[right];
 
         leftName = left.name;
-        rightName = right.name;
         leftPledge = left.pledge;
+        leftScore = left.score;
+        rightName = right.name;
         rightPledge = right.pledge;
+        rightScore = right.score;
     }
 
     function getPlayerCombatantPledge(uint _id, uint combatant) public view returns(uint) {
