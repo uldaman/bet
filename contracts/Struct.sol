@@ -1,7 +1,5 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import "../lib/UintList.sol";
-
 contract Struct {
     enum Stages {
         None,
@@ -16,20 +14,21 @@ contract Struct {
     uint constant right = 2;
 
     struct Vote {
-        mapping (uint => uint) pledge;  // choice (left or right) => pledge
+        uint pledge;
         bool hasWithdraw;
+    }
+
+    struct Combatant {
+        uint score;
+        uint pledge;
+        string name;
+        mapping (address => Vote) players;
     }
 
     struct Quiz {
         Stages stage;
-        uint winner;
-        mapping (uint => uint) totalPledge;  // choice (left or right) => total pledge
-        mapping (address => Vote) players;
+        mapping (uint => Combatant) combatants; // combatant (left or right) => Combatant
     }
 
     mapping (uint => Quiz) quizs;  // quiz id => quiz struct
-
-    /// @dev 存取玩家参与的所有 Quiz
-    using UintList for UintList.data;
-    mapping (address => UintList.data) playerQuizs;
 }

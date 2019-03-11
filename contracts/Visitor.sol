@@ -3,42 +3,25 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Player.sol";
 
 contract Visitor is Player {
-    function getQuizChoicePledge(uint _id, uint choice) public view returns(uint) {
-        require(choice == left || choice == right, "Choice can only be 1 or 2");
-        return quizs[_id].totalPledge[choice];
+    function getQuiz(uint _id) public view returns(
+        uint id, Stages stage,
+        string memory leftName, uint leftPledge,
+        string memory rightName, uint rightPledge,
+        uint winner
+    ) {
+        require(quizs[_id].stage != Stages.None, "Quiz not exited");
+        Quiz storage quiz = quizs[_id];
+        id = _id;
+        stage = quiz.stage;
+        leftName = quiz.leftName;
+        rightName = quiz.rightName;
+        winner = quiz.winner;
+        leftPledge = quiz.totalPledge[left];
+        rightPledge = quiz.totalPledge[right];
     }
 
-    function getPlayerChoicePledge(uint _id, uint choice) public view returns(uint) {
-        require(choice == left || choice == right, "Choice can only be 1 or 2");
-        return quizs[_id].players[msg.sender].pledge[choice];
-    }
-
-    function getQuizWinner(uint _id) public view returns(uint) {
-        require(quizs[_id].stage == Stages.Finished, "Quiz must be finished");
-        return quizs[_id].winner;
-    }
-
-    function isQuizActive(uint _id) public view returns (bool) {
-        return quizs[_id].stage == Stages.Active;
-    }
-
-    function isQuizLocked(uint _id) public view returns (bool) {
-        return quizs[_id].stage == Stages.Active;
-    }
-
-    function isQuizFinished(uint _id) public view returns (bool) {
-        return quizs[_id].stage == Stages.Active;
-    }
-
-    function getPlayerQuizs() external view returns(uint[] memory) {
-        uint[] memory result = new uint[](playerQuizs[msg.sender].count);
-        uint counter = 0;
-        for (uint i = playerQuizs[msg.sender].iterate_start()
-        ;playerQuizs[msg.sender].iterate_valid(i)
-        ;i = playerQuizs[msg.sender].iterate_next(i)) {
-            result[counter] = playerQuizs[msg.sender].iterate_get(i);
-            counter++;
-        }
-        return result;
+    function getPlayerChoicePledge(uint _id, uint combatant) public view returns(uint) {
+        require(combatant == left || combatant == right, "Combatant can only be 1 or 2");
+        return quizs[_id].players[msg.sender].pledge[combatant];
     }
 }
