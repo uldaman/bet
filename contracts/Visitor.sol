@@ -17,15 +17,15 @@ contract Visitor is Player {
         Combatant storage right = quiz.combatants[right];
 
         leftName = left.name;
-        leftPledge = left.pledge;
+        leftPledge = left.totalPledge;
         leftScore = left.score;
         rightName = right.name;
-        rightPledge = right.pledge;
+        rightPledge = right.totalPledge;
         rightScore = right.score;
     }
 
     function getPlayerCombatantPledge(uint _id, uint combatant) public view returns(uint) {
         require(combatant == left || combatant == right, "Combatant can only be 1 or 2");
-        return quizs[_id].combatants[combatant].players[msg.sender].pledge;
+        return quizs[_id].combatants[combatant].pledges[msg.sender];
     }
 }

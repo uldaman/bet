@@ -13,21 +13,17 @@ contract Struct {
     uint constant left = 1;
     uint constant right = 2;
 
-    struct Vote {
-        uint pledge;
-        bool hasWithdraw;
-    }
-
     struct Combatant {
         uint score;
-        uint pledge;
+        uint totalPledge;
         string name;
-        mapping (address => Vote) players;
+        mapping (address => uint) pledges;
     }
 
     struct Quiz {
         Stages stage;
         mapping (uint => Combatant) combatants; // combatant (left or right) => Combatant
+        mapping (address => bool) hasWithdraw;
     }
 
     mapping (uint => Quiz) quizs;  // quiz id => quiz struct

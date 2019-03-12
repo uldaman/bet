@@ -47,9 +47,9 @@ contract Manager is Struct {
 
         require(quiz.stage == Stages.Finished, "Quiz must be Finished");
 
-        if (quiz.combatants[left].pledge > quiz.combatants[right].pledge) {
+        if (quiz.combatants[left].score > quiz.combatants[right].score) {
             return left;
-        } else if (quiz.combatants[left].pledge < quiz.combatants[right].pledge) {
+        } else if (quiz.combatants[left].score < quiz.combatants[right].score) {
             return right;
         }
 

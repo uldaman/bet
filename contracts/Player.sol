@@ -15,46 +15,47 @@ contract Player is Manager {
         require(msg.value >= minStakes, "Pledge must be above the minimum");
 
         Combatant storage c = quiz.combatants[combatant];
-        Vote storage v = c.players[msg.sender];
 
-        c.pledge = c.pledge + msg.value;
-        v.pledge = v.pledge + msg.value;
+        c.totalPledge = c.totalPledge + msg.value;
+        c.pledges[msg.sender] = c.pledges[msg.sender] + msg.value;
 
         emit _join(_id, msg.sender, combatant, msg.value);
     }
 
+
     function repent(uint _id, uint combatant) public {
         Quiz storage quiz = quizs[_id];
         Combatant storage c = quiz.combatants[combatant];
-        Vote storage v = c.players[msg.sender];
 
         require(quiz.stage == Stages.Active || quiz.stage == Stages.Canceled, "Quiz must be active or cancelled");
         require(combatant == left || combatant == right, "Combatant can only be 1 or 2");
-        require(v.pledge != 0, "This combatant is not selected");
+        require(c.pledges[msg.sender] != 0, "This combatant is not selected");
 
-        uint stakes = v.pledge;
-        c.pledge = c.pledge - stakes;
-        v.pledge = 0;
+        uint stakes = c.pledges[msg.sender];
+        c.totalPledge = c.totalPledge - stakes;
+        c.pledges[msg.sender] = 0;
         msg.sender.transfer(stakes);
 
         emit _repent(_id, msg.sender, combatant, stakes);
     }
 
     function withdraw(uint _id) public {
-        /// _winner 处理 0 的情况
         Quiz storage quiz = quizs[_id];
-        Combatant storage w = quiz.combatants[_winner(_id)];
-        Vote storage v = w.players[msg.sender];
-
         require(quiz.stage == Stages.Finished, "Quiz must be finished");
-        require(!v.hasWithdraw, "Has already withdrawed");
-        require(v.pledge > 0, "No combatant to win");
+        require(!quiz.hasWithdraw[msg.sender], "Has already withdrawed");
 
-        uint totalAaward = quiz.combatants[left].pledge + quiz.combatants[right].pledge;
-        uint award = totalAaward * v.pledge / w.pledge;
-        v.hasWithdraw = true;
+        uint totalAaward = quiz.combatants[left].totalPledge + quiz.combatants[right].totalPledge;
+        uint winner = _winner(_id);
+        uint award;
+
+        if (winner == left || winner == right) {
+            award = totalAaward * quiz.combatants[winner].pledges[msg.sender] / quiz.combatants[winner].totalPledge;
+        } else {
+            award = quiz.combatants[left].pledges[msg.sender] + quiz.combatants[right].pledges[msg.sender];
+        }
+
+        quiz.hasWithdraw[msg.sender] = true;
         msg.sender.transfer(award);
-
         emit _withdraw(_id, msg.sender, award);
     }
 }
