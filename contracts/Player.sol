@@ -44,6 +44,14 @@ contract Player is Manager {
         require(quiz.stage == Stages.Finished, "Quiz must be finished");
         require(!quiz.hasWithdraw[msg.sender], "Has already withdrawed");
 
+        uint award = _award(_id);
+        quiz.hasWithdraw[msg.sender] = true;
+        msg.sender.transfer(award);
+        emit _withdraw(_id, msg.sender, award);
+    }
+
+    function _award(uint _id) internal view returns (uint) {
+        Quiz storage quiz = quizs[_id];
         uint totalAaward = quiz.combatants[left].totalPledge + quiz.combatants[right].totalPledge;
         uint winner = _winner(_id);
         uint award;
@@ -54,8 +62,6 @@ contract Player is Manager {
             award = quiz.combatants[left].pledges[msg.sender] + quiz.combatants[right].pledges[msg.sender];
         }
 
-        quiz.hasWithdraw[msg.sender] = true;
-        msg.sender.transfer(award);
-        emit _withdraw(_id, msg.sender, award);
+        return award;
     }
 }

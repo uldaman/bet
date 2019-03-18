@@ -3,14 +3,16 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Struct.sol";
 
 contract Manager is Struct {
-    event _creat(uint indexed _id, string leftName, string rightName);
+    event _creat(uint indexed _id, string indexed leftName, string indexed rightName);
     event _cancel(uint indexed _id);
     event _lock(uint indexed _id);
     event _finish(uint indexed _id, uint winner);
 
-    function creat(uint _id, string memory leftName, string memory rightName) public {
+    function creat(uint _id, uint startTime, string memory gameName, string memory leftName, string memory rightName) public {
         require(quizs[_id].stage == Stages.None, "Quiz must be none");
         quizs[_id].stage = Stages.Active;
+        quizs[_id].startTime = startTime;
+        quizs[_id].gameName = gameName;
         quizs[_id].combatants[left].name = leftName;
         quizs[_id].combatants[right].name = rightName;
         emit _creat(_id, leftName, rightName);

@@ -22,6 +22,8 @@ contract Struct {
 
     struct Quiz {
         Stages stage;
+        uint startTime;
+        string gameName;
         mapping (uint => Combatant) combatants; // combatant (left or right) => Combatant
         mapping (address => bool) hasWithdraw;
     }
