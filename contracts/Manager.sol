@@ -3,7 +3,7 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Struct.sol";
 
 contract Manager is Struct {
-    event _creat(uint indexed _id, string indexed leftName, string indexed rightName);
+    event _creat(uint indexed _id, string leftName, string rightName);
     event _cancel(uint indexed _id);
     event _lock(uint indexed _id);
     event _finish(uint indexed _id, uint winner);
