@@ -3,7 +3,7 @@ pragma solidity >=0.4.24 <0.6.0;
 import "./Struct.sol";
 
 contract Manager is Struct {
-    event _creat(uint indexed _id, string leftName, string rightName);
+    event _creat(uint indexed _id, string gameName, uint startTime, string leftName, string rightName);
     event _cancel(uint indexed _id);
     event _lock(uint indexed _id);
     event _finish(uint indexed _id, uint winner);
@@ -15,7 +15,7 @@ contract Manager is Struct {
         quizs[_id].gameName = gameName;
         quizs[_id].combatants[left].name = leftName;
         quizs[_id].combatants[right].name = rightName;
-        emit _creat(_id, leftName, rightName);
+        emit _creat(_id, gameName, startTime, leftName, rightName);
     }
 
     function cancel(uint _id) public {

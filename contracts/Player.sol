@@ -12,12 +12,12 @@ contract Player is Manager {
 
         require(quiz.stage == Stages.Active, "Quiz must be active");
         require(combatant == left || combatant == right, "Combatant can only be 1 or 2");
-        require(msg.value >= minStakes, "Pledge must be above the minimum");
+        require(msg.value >= minStakes, "Bet must be above the minimum");
 
         Combatant storage c = quiz.combatants[combatant];
 
-        c.totalPledge = c.totalPledge + msg.value;
-        c.pledges[msg.sender] = c.pledges[msg.sender] + msg.value;
+        c.totalBet = c.totalBet + msg.value;
+        c.bets[msg.sender] = c.bets[msg.sender] + msg.value;
 
         emit _join(_id, msg.sender, combatant, msg.value);
     }
@@ -29,11 +29,11 @@ contract Player is Manager {
 
         require(quiz.stage == Stages.Active || quiz.stage == Stages.Canceled, "Quiz must be active or cancelled");
         require(combatant == left || combatant == right, "Combatant can only be 1 or 2");
-        require(c.pledges[msg.sender] != 0, "This combatant is not selected");
+        require(c.bets[msg.sender] != 0, "This combatant is not selected");
 
-        uint stakes = c.pledges[msg.sender];
-        c.totalPledge = c.totalPledge - stakes;
-        c.pledges[msg.sender] = 0;
+        uint stakes = c.bets[msg.sender];
+        c.totalBet = c.totalBet - stakes;
+        c.bets[msg.sender] = 0;
         msg.sender.transfer(stakes);
 
         emit _repent(_id, msg.sender, combatant, stakes);
@@ -52,14 +52,14 @@ contract Player is Manager {
 
     function _award(uint _id) internal view returns (uint) {
         Quiz storage quiz = quizs[_id];
-        uint totalAaward = quiz.combatants[left].totalPledge + quiz.combatants[right].totalPledge;
+        uint totalAaward = quiz.combatants[left].totalBet + quiz.combatants[right].totalBet;
         uint winner = _winner(_id);
         uint award;
 
         if (winner == left || winner == right) {
-            award = totalAaward * quiz.combatants[winner].pledges[msg.sender] / quiz.combatants[winner].totalPledge;
+            award = totalAaward * quiz.combatants[winner].bets[msg.sender] / quiz.combatants[winner].totalBet;
         } else {
-            award = quiz.combatants[left].pledges[msg.sender] + quiz.combatants[right].pledges[msg.sender];
+            award = quiz.combatants[left].bets[msg.sender] + quiz.combatants[right].bets[msg.sender];
         }
 
         return award;

@@ -15,9 +15,9 @@ contract Struct {
 
     struct Combatant {
         uint score;
-        uint totalPledge;
+        uint totalBet;
         string name;
-        mapping (address => uint) pledges;
+        mapping (address => uint) bets;
     }
 
     struct Quiz {
