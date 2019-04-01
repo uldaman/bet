@@ -2,6 +2,7 @@ pragma solidity >=0.4.24 <0.6.0;
 
 import "./Player.sol";
 
+
 contract Visitor is Player {
     function getQuiz(uint _id) public view returns(
         uint id, Stages stage,uint startTime, string memory gameName,
@@ -38,5 +39,9 @@ contract Visitor is Player {
             return 0;
         }
         return _award(_id);
+    }
+
+    function getQuizWinner(uint _id) public view returns(uint) {
+        return _winner(_id);
     }
 }

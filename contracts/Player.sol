@@ -1,8 +1,9 @@
 pragma solidity >=0.4.24 <0.6.0;
 
-import "./Manager.sol";
+import "./Quiz.sol";
 
-contract Player is Manager {
+
+contract Player is Quiz {
     event _join(uint indexed _id, address indexed player, uint combatant, uint stakes);
     event _repent(uint indexed _id, address indexed player, uint combatant, uint stakes);
     event _withdraw(uint indexed _id, address indexed player, uint award);
