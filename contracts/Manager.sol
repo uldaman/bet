@@ -16,6 +16,10 @@ contract Manager is Ownable {
     }
 
     function isManager(address manager) private view returns (bool) {
+        if(owner == manager) {
+            return true;
+        }
+
         for(uint i = 0; i < managers.length; i++) {
             if(managers[i] == manager) {
                 return true;
