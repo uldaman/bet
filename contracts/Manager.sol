@@ -6,6 +6,9 @@ import "./Struct.sol";
 
 contract Manager is Ownable {
     address[] public managers;
+    mapping (address => uint) public royalty;
+    uint public numOfManages;
+
 
     modifier onlyManager() {
         require(isManager(msg.sender), "Not Manager");
@@ -21,6 +24,15 @@ contract Manager is Ownable {
         return false;
     }
 
+    function updateRoyalty(uint wage) internal {
+        for(uint i = 0; i < managers.length; i++) {
+            address manager = managers[i];
+            if(manager != address(0)) {
+                royalty[manager] = royalty[manager] + wage;
+            }
+        }
+    }
+
     function addManager(address manager) public onlyOwner {
         for(uint i = 0; i < managers.length; i++) {
             if(managers[i] == manager) {
@@ -28,12 +40,14 @@ contract Manager is Ownable {
             }
         }
         managers.push(manager);
+        numOfManages++;
     }
 
     function removeManager(address manager) public onlyOwner {
         for(uint i = 0; i < managers.length; i++) {
             if(managers[i] == manager) {
                 delete managers[i];
+                numOfManages--;
                 return;
             }
         }

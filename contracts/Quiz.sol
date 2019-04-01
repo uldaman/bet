@@ -38,6 +38,9 @@ contract Quiz is Manager, Struct {
         require(quiz.stage == Stages.Locked, "Quiz must be locked");
         quiz.stage = Stages.Finished;
 
+        uint totalAaward = quiz.combatants[left].totalBet + quiz.combatants[right].totalBet;
+        updateRoyalty(totalAaward / 1000 / numOfManages);
+
         emit _finish(_id, _winner(_id));
     }
 
