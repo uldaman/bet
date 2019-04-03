@@ -8,7 +8,13 @@ contract Player is Quiz {
     event _repent(uint indexed _id, address indexed player, uint combatant, uint stakes);
     event _withdraw(uint indexed _id, address indexed player, uint award);
 
-    function join(uint _id, uint combatant) public payable {
+    modifier quizNotStart(uint _id) {
+        Quiz storage quiz = quizs[_id];
+        require(now + 1 hours <= quiz.startTime, "Quiz must not start");
+        _;
+    }
+
+    function join(uint _id, uint combatant) public payable quizNotStart(_id) {
         Quiz storage quiz = quizs[_id];
 
         require(quiz.stage == Stages.Active, "Quiz must be active");
@@ -24,7 +30,7 @@ contract Player is Quiz {
     }
 
 
-    function repent(uint _id, uint combatant) public {
+    function repent(uint _id, uint combatant) public quizNotStart(_id) {
         Quiz storage quiz = quizs[_id];
         Combatant storage c = quiz.combatants[combatant];
 

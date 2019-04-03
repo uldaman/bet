@@ -5,7 +5,6 @@ contract Struct {
     enum Stages {
         None,
         Active,
-        Locked,
         Canceled,
         Finished
     }
