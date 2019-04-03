@@ -32,14 +32,15 @@ contract Quiz is Manager, Struct {
         emit _lock(_id);
     }
 
-    function finish(uint _id) public onlyManager {
+    function finish(uint _id, uint letScore, uint rightScore) public onlyManager {
         Quiz storage quiz = quizs[_id];
 
         require(quiz.stage == Stages.Locked, "Quiz must be locked");
         quiz.stage = Stages.Finished;
+        quiz.combatants[left].score = letScore;
+        quiz.combatants[right].score = rightScore;
 
-        uint totalAaward = quiz.combatants[left].totalBet + quiz.combatants[right].totalBet;
-        updateRoyalty(totalAaward / 1000 / numOfManages);
+        updateRoyalty(_royalty(_id) / numOfManages);
 
         emit _finish(_id, _winner(_id));
     }
@@ -47,6 +48,15 @@ contract Quiz is Manager, Struct {
     function updateScore(uint _id, uint combatant, uint score) public onlyManager {
         require(quizs[_id].stage == Stages.Locked, "Quiz must be locked");
         quizs[_id].combatants[combatant].score = score;
+    }
+
+    function _royalty(uint _id) internal view returns (uint) {
+        return _bonusPool(_id) / 1000;
+    }
+
+    function _bonusPool(uint _id) internal view returns (uint) {
+        Quiz storage quiz = quizs[_id];
+        return quiz.combatants[left].totalBet + quiz.combatants[right].totalBet;
     }
 
     function _winner(uint _id) internal view returns (uint) {

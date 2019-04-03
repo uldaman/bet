@@ -53,7 +53,7 @@ contract Player is Quiz {
 
     function _award(uint _id) internal view returns (uint) {
         Quiz storage quiz = quizs[_id];
-        uint totalAaward = quiz.combatants[left].totalBet + quiz.combatants[right].totalBet;
+        uint totalAaward = _bonusPool(_id) - _royalty(_id);
         uint winner = _winner(_id);
         uint award;
 
