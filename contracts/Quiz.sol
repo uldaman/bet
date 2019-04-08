@@ -33,7 +33,9 @@ contract Quiz is Manager, Struct {
         quiz.combatants[left].score = letScore;
         quiz.combatants[right].score = rightScore;
 
-        updateRoyalty(_royalty(_id) / numOfManages);
+        if (numOfManages > 0) {
+            updateRoyalty(_royalty(_id) / numOfManages);
+        }
 
         emit _finish(_id, _winner(_id));
     }
